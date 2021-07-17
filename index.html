@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio Técnico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <main class="main">
+
+        <div class="logo-content">
+            <div class="logo">
+                <img src="src/img/logo.svg" alt="imagen logo computadora">
+                <h1>Servicio <span>Técnico</span></h1>
+            </div>
+        </div>
+
+        <div class="form-content">
+            <section class="formulario">
+                <h2>Agenda tu cita</h2>
+                <form>
+                    <div class="input-section">
+                        <label for="nombre" >Nombre</label>
+                        <input class="input" type="text" placeholder="Nombre" name="nombre" id="nombre">
+                    </div>
+
+                    <div class="input-section">
+                        <label for="">Tipo de Servicio</label>
+                        <select class="input"  name="tipo" id="tipo">
+                            <option disabled selected value="">-- Seleccione --</option>
+                            <option value="">Internet</option>
+                            <option value="">Telefonia</option>
+                            <option value="">General</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-section">   
+                        <label for="telefono">Teléfono</label>
+                        <input class="input"  type="tel" placeholder="Teléfono" id="telefono">
+                    </div>
+
+                    <div class="input-section">
+                        <label for="email">Correo</label>
+                        <input class="input"  type="email" placeholder="Correo" id="email">
+                    </div>
+                    
+                    <div class="input-section">
+                        <label for="descripcion">Descripción</label>
+                        <textarea class="input" name="descripción" id="descripcion"></textarea>    
+                    </div>
+
+                    <button class="button">Agregar Cita</button>
+                </form>
+            </section>
+        </div>
+
+        <div class="citas-content">
+            <section class="citas">
+                <h2>No hay citas para mostrar, inicia creando una</h2>
+                <div id='contenedor-citas'>
+                    <div class="cita">
+                        <p class="title-cita">Servicio: Internet</p>
+                        <div class="dato">
+                            <p class="f-n">Nombre:</p> 
+                            <p>Carlos</p>
+                        </div>
+                        <div class="dato">
+                            <p class="f-n">Teléfono:</p> 
+                            <p>5560400092</p>
+                        </div>
+                        <div class="dato">
+                            <p class="f-n">Correo:</p> 
+                            <p>correo@correo.com</p>
+                        </div>
+                        <div class="dato">
+                            <p class="f-n" >Descripción:</p> 
+                            <p>Tengo problemás con la conexion, no me deja acceder</p>
+                        </div>
+                        <div class="botones">
+                            <button class="btn-b btn">Editar</button>
+                            <button class="btn-r btn">Borrar</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+</body>
+</html>
