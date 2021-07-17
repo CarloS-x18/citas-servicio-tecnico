@@ -11,57 +11,59 @@
 <body>
     <main class="main">
 
-        <div class="logo-content">
-            <div class="logo">
-                <img src="src/img/logo.svg" alt="imagen logo computadora">
-                <h1>Servicio <span>Técnico</span></h1>
+        <div class="flex">
+            <div class="logo-content">
+                <div class="logo">
+                    <img src="src/img/logo.svg" alt="imagen logo computadora">
+                    <h1>Servicio <span>Técnico</span></h1>
+                </div>
             </div>
-        </div>
-
-        <div class="form-content">
-            <section class="formulario">
-                <h2>Agenda tu cita</h2>
-                <form>
-                    <div class="input-section">
-                        <label for="nombre" >Nombre</label>
-                        <input class="input" type="text" placeholder="Nombre" name="nombre" id="nombre">
-                    </div>
-
-                    <div class="input-section">
-                        <label for="">Tipo de Servicio</label>
-                        <select class="input"  name="tipo" id="tipo">
-                            <option disabled selected value="">-- Seleccione --</option>
-                            <option value="">Internet</option>
-                            <option value="">Telefonia</option>
-                            <option value="">General</option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-section">   
-                        <label for="telefono">Teléfono</label>
-                        <input class="input"  type="tel" placeholder="Teléfono" id="telefono">
-                    </div>
-
-                    <div class="input-section">
-                        <label for="email">Correo</label>
-                        <input class="input"  type="email" placeholder="Correo" id="email">
-                    </div>
-                    
-                    <div class="input-section">
-                        <label for="descripcion">Descripción</label>
-                        <textarea class="input" name="descripción" id="descripcion"></textarea>    
-                    </div>
-
-                    <button class="button">Agregar Cita</button>
-                </form>
-            </section>
+    
+            <div class="form-content">
+                <section class="formulario">
+                    <h2 id="titulo-citas">Agenda tu cita</h2>
+                    <form id="formulario">
+                        <div class="input-section">
+                            <label for="nombre" >Nombre</label>
+                            <input class="input" type="text" placeholder="Nombre" name="nombre" id="nombre">
+                        </div>
+    
+                        <div class="input-section">
+                            <label for="">Tipo de Servicio</label>
+                            <select class="input"  name="tipo" id="tipo">
+                                <option disabled selected value="">-- Seleccione --</option>
+                                <option value="internet">Internet</option>
+                                <option value="telefonia">Telefonia</option>
+                                <option value="general">General</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-section">   
+                            <label for="telefono">Teléfono</label>
+                            <input class="input"  type="tel" placeholder="Teléfono" id="telefono">
+                        </div>
+    
+                        <div class="input-section">
+                            <label for="email">Correo</label>
+                            <input class="input"  type="email" placeholder="Correo" id="email">
+                        </div>
+                        
+                        <div class="input-section">
+                            <label for="descripcion">Descripción</label>
+                            <textarea class="input" name="descripción" id="descripcion"></textarea>    
+                        </div>
+    
+                        <button class="button">Agregar Cita</button>
+                    </form>
+                </section>
+            </div>
         </div>
 
         <div class="citas-content">
             <section class="citas">
                 <h2>No hay citas para mostrar, inicia creando una</h2>
                 <div id='contenedor-citas'>
-                    <div class="cita">
+                    <!-- <div class="cita">
                         <p class="title-cita">Servicio: Internet</p>
                         <div class="dato">
                             <p class="f-n">Nombre:</p> 
@@ -80,14 +82,16 @@
                             <p>Tengo problemás con la conexion, no me deja acceder</p>
                         </div>
                         <div class="botones">
-                            <button class="btn-b btn">Editar</button>
-                            <button class="btn-r btn">Borrar</button>
-                        </div>
+                            <button class="btn-b btn">Editar </button>
+                            <button class="btn-r     btn">Borrar</button>
+                        </div> -->
                     </div>
                 </div>
             </section>
         </div>
 
     </main>
+
+    <script src="js/app.js"></script>
 </body>
 </html>
