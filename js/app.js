@@ -96,35 +96,33 @@ function obtenerClientes() {
                 contenedorCitas.innerHTML += `
                     <div class="cita">
                         <p class="title-cita">Servicio: ${tipo}</p>
-                    <div class="dato">
-                        <p class="f-n">Nombre:</p> 
-                        <p>${nombre}</p>
-                    </div>
-                    <div class="dato">
-                        <p class="f-n">Teléfono:</p> 
-                        <p>${telefono}</p>
-                    </div>
-                    <div class="dato">
-                        <p class="f-n">Correo:</p> 
-                        <p>${email}</p>
-                    </div>
-                    <div class="dato">
-                        <p class="f-n" >Descripción:</p> 
-                        <p>${descripcion}</p>
-                    </div>
-                    <div class="botones">
-                        <button class="btn-b btn">Editar </button>
-                        <button class="btn-r btn eliminar">Borrar</button>
+                        <div class="dato">
+                            <p class="f-n">Nombre:</p> 
+                            <p>${nombre}</p>
+                        </div>
+                        <div class="dato">
+                            <p class="f-n">Teléfono:</p> 
+                            <p>${telefono}</p>
+                        </div>
+                        <div class="dato">
+                            <p class="f-n">Correo:</p> 
+                            <p>${email}</p>
+                        </div>
+                        <div class="dato">
+                            <p class="f-n" >Descripción:</p> 
+                            <p>${descripcion}</p>
+                        </div>
+                        <div class="botones">
+                            <button data-cita="${id}" class="btn-b btn">Editar </button>
+                            <button data-cita="${id}" class="btn-r btn eliminar">Borrar</button>
+                        </div>
                     </div>
                 `;
 
                 contadorCitas++;
+                cambiarTitulo();
 
                 cursor.continue();
-            }
-
-            if(contadorCitas > 0) {
-                titulo.innerText = 'Administrar Citas';
             }
         }
     }
@@ -132,7 +130,24 @@ function obtenerClientes() {
 
 function eliminarCita(e) {
     if(e.target.classList.contains('eliminar')) {
+        const idCita = Number(e.target.dataset.cita);
+        console.log(idCita)
+
         const confirmar = confirm('¿Realmente deseas eliminar la cita?');
+
+        if(confirmar) {
+            const transaction = DB.transaction(['crm'], 'readwrite');
+            const objectStore = transaction.objectStore('crm');
+
+            objectStore.delete(idCita);
+
+            transaction.oncomplete = function() {
+                e.target.parentElement.parentElement.remove();
+
+                contadorCitas--;
+                cambiarTitulo();
+            }
+        }
     }
 }
 
@@ -161,5 +176,13 @@ function imprimirAlerta(mensaje, tipo) {
 function limpiarHTML() {
     while(contenedorCitas.firstChild) {
         contenedorCitas.removeChild(contenedorCitas.firstChild);
+    }
+}
+
+function cambiarTitulo() {
+    if(contadorCitas > 0) {
+        titulo.innerText = 'Administrar Citas';
+    } else {
+        titulo.innerText = 'No hay citas para mostrar, inicia creando una';
     }
 }
