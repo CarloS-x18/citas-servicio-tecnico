@@ -82,6 +82,8 @@ function obtenerClientes() {
 
         const objectStore = DB.transaction('crm').objectStore('crm'); // abrimos el objectstore
 
+        limpiarHTML();
+
         objectStore.openCursor().onsuccess = function(e) {
             const cursor = e.target.result;
 
@@ -90,7 +92,7 @@ function obtenerClientes() {
 
                 contenedorCitas.innerHTML += `
                     <div class="cita">
-                    <p class="title-cita">Servicio: ${tipo}</p>
+                        <p class="title-cita">Servicio: ${tipo}</p>
                     <div class="dato">
                         <p class="f-n">Nombre:</p> 
                         <p>${nombre}</p>
@@ -144,5 +146,11 @@ function imprimirAlerta(mensaje, tipo) {
         setTimeout(() => {
             alerta.remove();
         }, 3000);
+    }
+}
+
+function limpiarHTML() {
+    while(contenedorCitas.firstChild) {
+        contenedorCitas.removeChild(contenedorCitas.firstChild);
     }
 }
