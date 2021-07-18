@@ -12,7 +12,7 @@ function crearDB() {
     abrirConexion.onupgradeneeded = function(e) { // Crea las tablas
         const db = e.target.result; // extrae el resultado de la conexion
         
-        const objectStore = db.createObjectStore('crm', { keyPath: 'id', autoIncrement: true }); // Crea la tabla general de la bd
+        const objectStore = db.createObjectStore('crm', { keyPath: 'id', autoIncrement: false }); // Crea la tabla general de la bd
 
         objectStore.createIndex('nombre', 'nombre', { unique: false }); // crea subtablas en el object store
         objectStore.createIndex('tipo', 'tipo', { unique: false });

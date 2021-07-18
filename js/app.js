@@ -2,9 +2,19 @@ const formulario = document.querySelector('#formulario');
 const tituloCitas = document.querySelector('#titulo-citas');
 const contenedorCitas = document.querySelector('#contenedor-citas');
 const titulo = document.querySelector('#titulo');
+const btnAgregar = document.querySelector('.button');
+
+// Inputs
+const nombreInput = document.querySelector('#nombre');
+const tipoInput = document.querySelector('#tipo');
+const telefonoInput = document.querySelector('#telefono');
+const emailInput = document.querySelector('#email');
+const descripcionInput = document.querySelector('#descripcion');
 
 let DB;
 let contadorCitas = 0;
+let editar = false;
+let idEditar;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,16 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Eliminar cita
     contenedorCitas.addEventListener('click', eliminarCita);
+
+    // Editar cit
+    contenedorCitas.addEventListener('click', editarCita);
 });
 
 function validarCita(e) {
     e.preventDefault();
 
-    const nombre = document.querySelector('#nombre').value;
-    const tipo = document.querySelector('#tipo').value;
-    const telefono = document.querySelector('#telefono').value;
-    const email = document.querySelector('#email').value;
-    const descripcion = document.querySelector('#descripcion').value;
+    const nombre = nombreInput.value;
+    const tipo = tipoInput.value;
+    const telefono = telefonoInput.value;
+    const email = emailInput.value;
+    const descripcion = descripcionInput.value;
     
     if( nombre === '' || tipo === '' || telefono === '' || email === '' || descripcion === '' ) {
         imprimirAlerta('Todos los campos son obligatorios', 'error');
@@ -40,28 +53,54 @@ function validarCita(e) {
         return;
     }
 
-    const cita = {
-        nombre, 
-        tipo,
-        telefono,
-        email,
-        descripcion
+    if(editar) {
+        const citaActializada = { 
+            nombre, 
+            tipo,
+            telefono,
+            email,
+            descripcion,
+            id: idEditar
+        }
+
+        const transaction = DB.transaction(['crm'], 'readwrite');
+        const objectStore = transaction.objectStore('crm');
+
+        objectStore.put(citaActializada);
+
+        transaction.oncomplete = function() {
+            imprimirAlerta('Se actualizo con exito');
+            editar = false;
+            idEditar = '';
+            btnAgregar.textContent = 'Agregar Cita';
+        }
+
+        transaction.onerror = function() {
+            imprimirAlerta('Hubo un error', 'error');
+        }
+    } else {
+        const cita = { // se agregan los datos al objeto
+            nombre, 
+            tipo,
+            telefono,
+            email,
+            descripcion
+        }
+    
+        cita.id = Date.now();
+    
+        agregarCita(cita);
     }
 
-    cita.id = Date.now();
-
-    agregarCita(cita);
-
     formulario.reset();
-
     obtenerClientes();
 }
 
 function agregarCita(cita) {
-    const transaction = DB.transaction(['crm'], 'readwrite');
-    const objectStore = transaction.objectStore('crm');
+    const transaction = DB.transaction(['crm'], 'readwrite'); // se abre la transaccion 
+    const objectStore = transaction.objectStore('crm'); // se ingresa al contenedor de tablas
 
-    objectStore.add(cita);
+    objectStore.add(cita); // se agrega la cita(objeto de cita)
 
     transaction.onerror = function() {
         imprimirAlerta('Hubo un error', 'error');
@@ -113,7 +152,7 @@ function obtenerClientes() {
                             <p>${descripcion}</p>
                         </div>
                         <div class="botones">
-                            <button data-cita="${id}" class="btn-b btn">Editar </button>
+                            <button data-cita="${id}" class="btn-b btn editar">Editar </button>
                             <button data-cita="${id}" class="btn-r btn eliminar">Borrar</button>
                         </div>
                     </div>
@@ -129,11 +168,10 @@ function obtenerClientes() {
 }
 
 function eliminarCita(e) {
-    if(e.target.classList.contains('eliminar')) {
-        const idCita = Number(e.target.dataset.cita);
-        console.log(idCita)
+    if(e.target.classList.contains('eliminar')) { // solo si se selecciona el boton de eliminar
+        const idCita = Number(e.target.dataset.cita); // toma el id
 
-        const confirmar = confirm('¿Realmente deseas eliminar la cita?');
+        const confirmar = confirm('¿Realmente deseas eliminar la cita?'); 
 
         if(confirmar) {
             const transaction = DB.transaction(['crm'], 'readwrite');
@@ -142,13 +180,57 @@ function eliminarCita(e) {
             objectStore.delete(idCita);
 
             transaction.oncomplete = function() {
-                e.target.parentElement.parentElement.remove();
+                e.target.parentElement.parentElement.remove(); // Elimina el elemento del HTML
 
-                contadorCitas--;
-                cambiarTitulo();
+                contadorCitas--; // resta en el contador para variar el titulo del contenedor citas
+                cambiarTitulo(); // Cambai el titulo en caso de ser requerido
             }
         }
     }
+}
+
+function editarCita(e) {
+    if(e.target.classList.contains('editar')) {
+
+        document.querySelector('.logo').scrollIntoView({
+            behavior: "smooth"
+        });
+
+        const idCita = Number(e.target.dataset.cita);
+        editar = true;
+
+        // Traer el objeto que se editara
+        const transaction = DB.transaction(['crm'], 'readwrite');
+        const objectStore = transaction.objectStore('crm');
+
+        const cita = objectStore.openCursor();
+        cita.onsuccess = function(e) {
+            const cursor = e.target.result;
+            
+            if(cursor) {
+                if(cursor.value.id === idCita) {
+                    llenarFormulario(cursor.value);
+                    idEditar = idCita;
+
+                    return;
+                }
+                cursor.continue();
+            }
+        }
+    }
+}
+
+function llenarFormulario(cita) {
+    const { nombre, telefono, tipo, email, descripcion } = cita;
+
+    nombreInput.value = nombre;
+    tipoInput.value = tipo;
+    telefonoInput.value = telefono;
+    emailInput.value = email;
+    descripcionInput.value = descripcion;
+
+    btnAgregar.textContent = 'Editar Cita';
+
 }
 
 function imprimirAlerta(mensaje, tipo) { 
