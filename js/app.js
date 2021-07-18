@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Valida los datos del formulario 
     formulario.addEventListener('submit', validarCita);
+
+    // Eliminar cita
+    contenedorCitas.addEventListener('click', eliminarCita);
 });
 
 function validarCita(e) {
@@ -111,7 +114,7 @@ function obtenerClientes() {
                     </div>
                     <div class="botones">
                         <button class="btn-b btn">Editar </button>
-                        <button class="btn-r btn">Borrar</button>
+                        <button class="btn-r btn eliminar">Borrar</button>
                     </div>
                 `;
 
@@ -124,6 +127,12 @@ function obtenerClientes() {
                 titulo.innerText = 'Administrar Citas';
             }
         }
+    }
+}
+
+function eliminarCita(e) {
+    if(e.target.classList.contains('eliminar')) {
+        const confirmar = confirm('¿Realmente deseas eliminar la cita?');
     }
 }
 
